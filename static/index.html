@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>STEMLens Lab</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <main>
+    <nav>
+      <div class="brand">
+        <span class="mark">SL</span>
+        <span>STEMLens Lab</span>
+      </div>
+      <div class="nav-links">
+        <a href="#lab">Lab</a>
+        <a href="#impact">Impact</a>
+        <a href="#build">Build</a>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">AI x STEM education</p>
+        <h1>Turn confusion into a tiny interactive lab.</h1>
+        <p class="lede">
+          STEMLens Lab builds a personalized STEM micro-lesson with a simulation,
+          misconception check, and short feedback loop. It is designed for students
+          who need to see an idea move before the formula makes sense.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="#lab">Create a micro-lab</a>
+          <a class="button secondary" href="#impact">Why it matters</a>
+        </div>
+      </div>
+      <div class="hero-panel" aria-label="Micro lab preview">
+        <div class="panel-top"><span></span><span></span><span></span><strong>student_mission.json</strong></div>
+        <pre>{
+  "topic": "Projectile motion",
+  "misconception": "Gravity changes vertical motion, not horizontal velocity.",
+  "lab": "Predict, simulate, explain",
+  "feedback": "short, specific, kind"
+}</pre>
+      </div>
+    </section>
+
+    <section id="lab" class="lab-grid">
+      <form class="control-card" id="missionForm">
+        <p class="eyebrow">Build a lesson</p>
+        <h2>Student setup</h2>
+        <label>
+          Topic
+          <select id="topic">
+            <option>Projectile motion</option>
+            <option>Ohm's law and circuits</option>
+            <option>Linear equations and slope</option>
+          </select>
+        </label>
+        <label>
+          Grade band
+          <select id="gradeBand">
+            <option>Middle school</option>
+            <option selected>High school</option>
+            <option>Early college</option>
+          </select>
+        </label>
+        <label>
+          What feels confusing?
+          <textarea id="struggle">I mix up velocity, acceleration, and gravity.</textarea>
+        </label>
+        <label>
+          Learning style
+          <select id="learningStyle">
+            <option selected>visual</option>
+            <option>step-by-step</option>
+            <option>challenge-based</option>
+          </select>
+        </label>
+        <button class="button primary" type="submit">Generate lab</button>
+        <p class="status" id="status">Ready.</p>
+      </form>
+
+      <section class="mission-card">
+        <div class="mission-head">
+          <p class="eyebrow" id="sourceLabel">Local fallback ready</p>
+          <h2 id="missionTitle">Projectile motion: Micro-Lab</h2>
+          <p id="missionHook">Turn projectile motion from a rule to something you can test.</p>
+        </div>
+        <div class="callout">
+          <strong>Learning goal</strong>
+          <p id="learningGoal">Build a working mental model by predicting, simulating, and explaining.</p>
+        </div>
+        <div class="callout warning">
+          <strong>Misconception to repair</strong>
+          <p id="misconception">Horizontal motion and vertical motion are connected by time, not by a shared force.</p>
+        </div>
+        <div class="stages" id="stages"></div>
+      </section>
+    </section>
+
+    <section class="sim-section">
+      <div class="sim-card">
+        <div class="sim-head">
+          <div>
+            <p class="eyebrow">Interactive simulation</p>
+            <h2 id="simTitle">Projectile sandbox</h2>
+          </div>
+          <button class="button secondary" id="resetSim" type="button">Reset</button>
+        </div>
+
+        <canvas id="simCanvas" width="720" height="360" aria-label="STEM simulation canvas"></canvas>
+
+        <div class="sliders" id="projectileControls">
+          <label>Launch speed <input id="speed" type="range" min="10" max="90" value="52" /></label>
+          <label>Angle <input id="angle" type="range" min="10" max="80" value="42" /></label>
+          <label>Gravity <input id="gravity" type="range" min="2" max="16" value="9.8" step="0.1" /></label>
+        </div>
+
+        <div class="sliders hidden" id="ohmControls">
+          <label>Voltage <input id="voltage" type="range" min="1" max="24" value="12" /></label>
+          <label>Resistance <input id="resistance" type="range" min="1" max="20" value="6" /></label>
+        </div>
+
+        <div class="sliders hidden" id="linearControls">
+          <label>Slope <input id="slope" type="range" min="-5" max="5" value="2" step="0.5" /></label>
+          <label>Y-intercept <input id="intercept" type="range" min="-8" max="8" value="1" step="0.5" /></label>
+        </div>
+
+        <div class="metrics" id="metrics"></div>
+      </div>
+
+      <aside class="coach-card">
+        <p class="eyebrow">Check understanding</p>
+        <h2>Explain what changed</h2>
+        <p id="checkQuestion">If launch speed stays fixed, what changes when the angle increases from 20 degrees to 45 degrees?</p>
+        <textarea id="studentAnswer" placeholder="Write your explanation here..."></textarea>
+        <button class="button primary" id="getFeedback" type="button">Get feedback</button>
+        <div class="feedback" id="feedback">Feedback will appear here.</div>
+      </aside>
+    </section>
+
+    <section id="impact" class="impact">
+      <div>
+        <p class="eyebrow">Why this can help</p>
+        <h2>Not a chatbot. A repair loop.</h2>
+      </div>
+      <div class="impact-grid">
+        <article>
+          <strong>1. Diagnose</strong>
+          <p>The learner names the confusing part instead of receiving a generic lesson.</p>
+        </article>
+        <article>
+          <strong>2. Simulate</strong>
+          <p>The concept becomes visible through sliders, motion, graphs, and meters.</p>
+        </article>
+        <article>
+          <strong>3. Explain</strong>
+          <p>Short feedback helps the student connect observation to vocabulary and formula.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="build" class="build-card">
+      <p class="eyebrow">Implementation</p>
+      <h2>Built for the DSH AI x STEM Education theme</h2>
+      <p>
+        The backend tries Hugging Face inference with a DeepSeek model when credentials are configured.
+        If the model is unavailable, the app still works with deterministic STEM mission templates.
+        The frontend is custom HTML/CSS/JS with real simulations, not a static mockup.
+      </p>
+    </section>
+  </main>
+  <script src="/static/app.js"></script>
+</body>
+</html>

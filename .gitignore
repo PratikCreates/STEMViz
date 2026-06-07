@@ -1,0 +1,30 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Generated deliverables
+demo_assets/
+dist/
+build/
+
+# Local data/cache
+data/
+datasets/
+*.csv
+*.db
+*.sqlite
+*.log
+
+# Local planning notes
+hack.txt
+DEV_NOTES.md
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
