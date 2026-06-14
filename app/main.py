@@ -38,7 +38,7 @@ class FeedbackRequest(BaseModel):
 
 
 app = FastAPI(
-    title="STEMLens Lab",
+    title="STEMViz",
     summary="AI-generated STEM micro-labs with interactive simulations.",
     version="0.1.0",
 )
@@ -57,7 +57,7 @@ async def favicon() -> FileResponse:
 
 @app.get("/health")
 async def health() -> dict[str, str]:
-    return {"status": "ok", "service": "stemlens-lab"}
+    return {"status": "ok", "service": "stemviz"}
 
 
 @app.post("/api/mission")

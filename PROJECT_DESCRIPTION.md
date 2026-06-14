@@ -1,10 +1,10 @@
-# STEMLens Lab
+# STEMViz
 
 ## One-Page Project Description
 
-STEMLens Lab is an AI-powered STEM education app that turns a student's confusion into a small interactive learning lab.
+STEMViz is an AI-powered STEM education app that turns a student's confusion into a small interactive learning lab.
 
-Instead of giving a generic chatbot explanation, STEMLens asks the learner what topic they are studying and what feels confusing. It then creates a short learning mission with a goal, a misconception to repair, a three-step activity, an interactive simulation, and a feedback prompt.
+Instead of giving a generic chatbot explanation, STEMViz asks the learner what topic they are studying and what feels confusing. It then creates a short learning mission with a goal, a misconception to repair, a three-step activity, an interactive simulation, and a feedback prompt.
 
 ## Problem
 
@@ -14,7 +14,7 @@ This makes learning feel abstract, especially for students who need visual or ha
 
 ## Solution
 
-STEMLens Lab creates micro-labs that combine:
+STEMViz creates micro-labs that combine:
 
 - AI-generated lesson framing
 - interactive STEM simulations
@@ -44,8 +44,8 @@ The frontend is custom HTML, CSS, and JavaScript. Simulations are drawn on a can
 
 ## Impact
 
-STEMLens Lab is designed for students who do not learn best from static text. It makes STEM concepts visible, testable, and explainable in a short loop. This can support self-study, classroom review, tutoring, and accessibility-focused STEM education.
+STEMViz is designed for students who do not learn best from static text. It makes STEM concepts visible, testable, and explainable in a short loop. This can support self-study, classroom review, tutoring, and accessibility-focused STEM education.
 
 ## Why This Is Different
 
-Most AI education tools stop at explanation. STEMLens Lab turns explanation into interaction. The student does not only read; they predict, simulate, observe, and explain.
+Most AI education tools stop at explanation. STEMViz turns explanation into interaction. The student does not only read; they predict, simulate, observe, and explain.

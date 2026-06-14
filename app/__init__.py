@@ -1,1 +1,1 @@
-"""STEMLens Lab application package."""
+"""STEMViz application package."""

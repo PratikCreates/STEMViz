@@ -1,4 +1,4 @@
-# Devpost Submission Draft: STEMLens Lab
+# Devpost Submission Draft: STEMViz
 
 Here is the structured content ready to copy-paste into the Devpost submission fields.
 
@@ -20,7 +20,7 @@ We wanted to build a tool that does not simply explain with text (like a typical
 
 ## What it does
 
-STEMLens Lab asks a student three simple questions:
+STEMViz asks a student three simple questions:
 1. What STEM topic are you studying? (e.g., Projectile motion, Ohm's law, Linear equations)
 2. What is your grade band? (Middle school, High school, Early college)
 3. What feels confusing? (e.g., *"I mix up velocity, acceleration, and gravity."*)
@@ -65,7 +65,7 @@ We learned how crucial it is to design AI education tools with visual anchors. C
 
 ---
 
-## What's next for STEMLens Lab
+## What's next for STEMViz
 
 - **More labs:** Add chemistry molecule balancing and biology cell diffusion sandboxes.
 - **Teacher dashboard:** Let teachers configure custom sandboxes, monitor student misconception repair rates, and assign specific micro-labs.
