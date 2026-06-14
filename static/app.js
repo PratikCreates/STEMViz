@@ -26,7 +26,7 @@ function renderMission(mission) {
   state.mission = mission;
   state.simulation = mission.simulation || "projectile";
   document.getElementById("sourceLabel").textContent =
-    mission.source === "huggingface-deepseek" ? "Generated with Hugging Face / DeepSeek" : "Generated locally";
+    mission.source.startsWith("huggingface-") ? "Generated with Hugging Face / " + mission.source.replace("huggingface-", "") : "Generated locally";
   document.getElementById("missionTitle").textContent = mission.title;
   document.getElementById("missionHook").textContent = mission.hook;
   document.getElementById("learningGoal").textContent = mission.learning_goal;
@@ -50,6 +50,7 @@ function renderMission(mission) {
     linear: "Line explorer",
   }[state.simulation];
   draw();
+  updateHelperChips();
 }
 
 async function postJson(url, payload) {
@@ -265,3 +266,104 @@ renderMission({
   simulation: "projectile",
   source: "local-fallback",
 });
+
+const chipsData = {
+  projectile: [
+    "Range increased",
+    "Time aloft increased",
+    "Max height increased",
+    "45° angle maximizes range",
+    "Gravity pulls it down faster",
+    "Independent motions"
+  ],
+  ohm: [
+    "Current increases",
+    "Current decreases",
+    "Resistance limits flow",
+    "Voltage pushes current",
+    "V = IR relation",
+    "Doubling resistance halves current"
+  ],
+  linear: [
+    "Slope increases steepness",
+    "Negative slope goes downwards",
+    "Y-intercept shifts starting point",
+    "y = mx + b line model",
+    "Zero slope is flat horizontal"
+  ]
+};
+
+function updateHelperChips() {
+  const container = document.getElementById("helperChips");
+  if (!container) return;
+  container.innerHTML = "";
+  
+  const currentChips = chipsData[state.simulation] || [];
+  currentChips.forEach(text => {
+    const chip = document.createElement("div");
+    chip.className = "chip";
+    chip.textContent = text;
+    chip.addEventListener("click", () => {
+      const textarea = document.getElementById("studentAnswer");
+      if (textarea.value.trim() === "") {
+        textarea.value = text;
+      } else {
+        textarea.value += " and " + text.toLowerCase();
+      }
+      textarea.dispatchEvent(new Event('input'));
+    });
+    container.appendChild(chip);
+  });
+}
+
+// Voice Recognition setup
+const voiceBtn = document.getElementById("voiceBtn");
+const studentAnswer = document.getElementById("studentAnswer");
+
+if (voiceBtn && studentAnswer) {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (SpeechRecognition) {
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    voiceBtn.addEventListener("click", () => {
+      if (voiceBtn.classList.contains("listening")) {
+        recognition.stop();
+      } else {
+        voiceBtn.classList.add("listening");
+        voiceBtn.textContent = "🎙️ Listening...";
+        recognition.start();
+      }
+    });
+
+    recognition.onresult = (event) => {
+      const speechToText = event.results[0][0].transcript;
+      if (studentAnswer.value.trim() === "") {
+        studentAnswer.value = speechToText;
+      } else {
+        studentAnswer.value += " " + speechToText;
+      }
+    };
+
+    recognition.onspeechend = () => {
+      recognition.stop();
+    };
+
+    recognition.onend = () => {
+      voiceBtn.classList.remove("listening");
+      voiceBtn.textContent = "🎤 Speak Answer";
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
+      voiceBtn.classList.remove("listening");
+      voiceBtn.textContent = "🎤 Speak Answer";
+    };
+  } else {
+    voiceBtn.style.display = "none";
+  }
+}
+

@@ -37,7 +37,7 @@ The app then generates:
 
 - **Frontend:** Built with vanilla HTML5, CSS3, and JavaScript, leveraging `<canvas>` for high-performance interactive physics and math simulations that respond instantly to slider adjustments.
 - **Backend:** Built with FastAPI (Python 3.11).
-- **AI Integration:** Features a Hugging Face Inference API client utilizing `deepseek-ai/DeepSeek-V3-0324` to dynamically generate targeted lesson structures and tailor tutoring feedback.
+- **AI Integration:** Features a Hugging Face Inference API client utilizing `deepseek-ai/DeepSeek-V4` to dynamically generate targeted lesson structures and tailor tutoring feedback.
 - **Robust Fallback:** If Hugging Face credentials are not configured or the model is overloaded, the app seamlessly falls back to pre-defined deterministic STEM templates. The app remains fully functional for demonstration.
 - **Deployment:** Containerized via Docker and deployed serverless to Google Cloud Run for rapid scaling and low-latency response times.
 

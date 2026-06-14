@@ -63,7 +63,7 @@ Create a local `.env` file:
 
 ```ini
 HF_TOKEN=your_hugging_face_token
-HF_TEXT_MODEL=deepseek-ai/DeepSeek-V3-0324
+HF_TEXT_MODEL=deepseek-ai/DeepSeek-V4
 ```
 
 The app also checks `HUGGINGFACEHUB_API_TOKEN` and `HF_API_KEY`.

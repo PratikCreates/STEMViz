@@ -63,7 +63,7 @@ async def health() -> dict[str, str]:
 @app.post("/api/mission")
 async def create_mission(payload: MissionRequest) -> dict[str, Any]:
     mission = _try_hf_mission(payload)
-    source = "huggingface-deepseek" if mission else "local-fallback"
+    source = f"huggingface-{mission.get('model_used', 'deepseek')}" if mission else "local-fallback"
     if mission is None:
         mission = _fallback_mission(payload)
     mission["source"] = source
@@ -83,7 +83,13 @@ def _try_hf_mission(payload: MissionRequest) -> dict[str, Any] | None:
     token = os.getenv("HF_TOKEN") or os.getenv("HUGGINGFACEHUB_API_TOKEN") or os.getenv("HF_API_KEY")
     if not token or InferenceClient is None:
         return None
-    model = os.getenv("HF_TEXT_MODEL", "deepseek-ai/DeepSeek-V3-0324")
+    configured_model = os.getenv("HF_TEXT_MODEL")
+    candidate_models = [configured_model] if configured_model else []
+    candidate_models.extend([
+        "deepseek-ai/DeepSeek-V4-Pro",
+        "deepseek-ai/DeepSeek-V4-Flash",
+        "deepseek-ai/DeepSeek-V4"
+    ])
     prompt = (
         "Create one compact JSON object for an interactive STEM education micro-lab. "
         "No markdown. Keys: title, hook, learning_goal, misconception, stages, check_question, success_hint. "
@@ -93,20 +99,31 @@ def _try_hf_mission(payload: MissionRequest) -> dict[str, Any] | None:
         f"Student struggle: {payload.struggle}\n"
         f"Learning style: {payload.learning_style}\n"
     )
-    try:
-        client = InferenceClient(model=model, token=token)
-        text = client.text_generation(prompt, max_new_tokens=550, temperature=0.45, return_full_text=False)
-        parsed = _extract_json(text)
-        return _normalize_mission(parsed, payload) if parsed else None
-    except Exception:
-        return None
+    for model in candidate_models:
+        try:
+            client = InferenceClient(model=model, token=token)
+            text = client.text_generation(prompt, max_new_tokens=550, temperature=0.45, return_full_text=False)
+            parsed = _extract_json(text)
+            if parsed:
+                normalized = _normalize_mission(parsed, payload)
+                normalized["model_used"] = model.split("/")[-1]
+                return normalized
+        except Exception:
+            continue
+    return None
 
 
 def _try_hf_feedback(payload: FeedbackRequest) -> str | None:
     token = os.getenv("HF_TOKEN") or os.getenv("HUGGINGFACEHUB_API_TOKEN") or os.getenv("HF_API_KEY")
     if not token or InferenceClient is None:
         return None
-    model = os.getenv("HF_TEXT_MODEL", "deepseek-ai/DeepSeek-V3-0324")
+    configured_model = os.getenv("HF_TEXT_MODEL")
+    candidate_models = [configured_model] if configured_model else []
+    candidate_models.extend([
+        "deepseek-ai/DeepSeek-V4-Pro",
+        "deepseek-ai/DeepSeek-V4-Flash",
+        "deepseek-ai/DeepSeek-V4"
+    ])
     prompt = (
         "Give concise, kind STEM tutoring feedback in 4 sentences or less. "
         "Correct misconceptions, mention the simulation if useful, and end with one next step.\n"
@@ -114,12 +131,16 @@ def _try_hf_feedback(payload: FeedbackRequest) -> str | None:
         f"Question: {payload.question}\n"
         f"Student answer: {payload.answer}\n"
     )
-    try:
-        client = InferenceClient(model=model, token=token)
-        text = client.text_generation(prompt, max_new_tokens=220, temperature=0.35, return_full_text=False)
-        return _clean_text(text, fallback=_fallback_feedback(payload))
-    except Exception:
-        return None
+    for model in candidate_models:
+        try:
+            client = InferenceClient(model=model, token=token)
+            text = client.text_generation(prompt, max_new_tokens=220, temperature=0.35, return_full_text=False)
+            cleaned = _clean_text(text, fallback="")
+            if cleaned:
+                return cleaned
+        except Exception:
+            continue
+    return None
 
 
 def _fallback_mission(payload: MissionRequest) -> dict[str, Any]:
