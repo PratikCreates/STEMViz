@@ -2,6 +2,8 @@
 
 STEMLens Lab is an AI-powered STEM education prototype for DSH Hacks V1.
 
+**Live Deployment URL:** [https://stemlens-lab-971465910048.us-central1.run.app](https://stemlens-lab-971465910048.us-central1.run.app)
+
 The idea is simple: when a student says what feels confusing, the app builds a small interactive learning lab around that confusion. It is not just a chatbot response. It gives the student a mission, a simulation, a misconception to repair, and a short feedback loop.
 
 ![STEMLens Lab interface](assets/screenshots/stemlens-home.png)
