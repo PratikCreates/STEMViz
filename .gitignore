@@ -20,10 +20,6 @@ datasets/
 *.sqlite
 *.log
 
-# Local planning notes
-hack.txt
-DEV_NOTES.md
-
 # OS/editor
 .DS_Store
 Thumbs.db

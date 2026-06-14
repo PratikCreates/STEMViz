@@ -180,12 +180,37 @@ def _fallback_mission(payload: MissionRequest) -> dict[str, Any]:
 
 
 def _fallback_feedback(payload: FeedbackRequest) -> str:
-    answer = payload.answer.strip()
+    answer = payload.answer.strip().lower()
+    topic = payload.topic.lower()
     if not answer:
-        return "Start with a short prediction first. A useful answer names the variable you changed, what you observed, and why that observation makes sense."
-    if len(answer.split()) < 8:
-        return "Good start, but make it more testable. Add one observation from the simulation and connect it to the main concept."
-    return "This is on the right track. Now strengthen it by naming the exact variable relationship and explaining what would happen if you changed only one slider."
+        return "Please enter an explanation first. Try using the helper chips below to describe what you observed in the simulation!"
+    if len(answer.split()) < 4:
+        return "Your response is a bit too short. Try to explain what you saw on the screen using a few more details or keywords."
+    if "projectile" in topic or "motion" in topic or "gravity" in topic:
+        if "range" not in answer and "height" not in answer and "time" not in answer:
+            return "Good start! But try to name what changed in the simulation (like the Range, Max Height, or Time Aloft) when you adjusted the sliders."
+        if "gravity" in answer and "pull" in answer:
+            return "Excellent observation! You noticed how gravity pulls the projectile down. Indeed, increasing gravity shortens the flight time and range."
+        if "45" in answer or "angle" in answer:
+            return "Spot on! You correctly observed that the launch angle directly shapes the path. A 45-degree angle balances horizontal and vertical velocity to maximize range."
+        return "You're on the right track. Remember: horizontal speed stays constant, while gravity accelerates the vertical motion downwards over time."
+    elif "ohm" in topic or "circuit" in topic or "voltage" in topic:
+        if "current" not in answer and "resistance" not in answer and "voltage" not in answer:
+            return "Good start! Mention how the voltage (V), resistance (Ω), or current (A) changed on the circuit meter when you moved the sliders."
+        if "resistance" in answer and ("increase" in answer or "double" in answer) and ("decrease" in answer or "half" in answer or "halves" in answer):
+            return "Perfect! You've nailed Ohm's Law. Increasing resistance restricts the current flow, showing that current and resistance are inversely proportional."
+        if "voltage" in answer and "increase" in answer and "current" in answer:
+            return "Exactly! Raising the voltage pushes more current through the circuit, showing they are directly proportional for a constant resistance."
+        return "Good observation. Think of voltage as the push, resistance as the restriction, and current as the actual flow rate: I = V/R."
+    elif "linear" in topic or "slope" in topic or "line" in topic or "equation" in topic:
+        if "slope" not in answer and "intercept" not in answer and "line" not in answer:
+            return "Great attempt! Discuss how the slope (m) or y-intercept (b) changed the steepness or vertical start of the line on the graph."
+        if "slope" in answer and ("steeper" in answer or "steep" in answer or "direction" in answer):
+            return "Excellent! You observed how slope controls the steepness and direction (positive goes up, negative goes down)."
+        if "intercept" in answer or "start" in answer or "y-axis" in answer:
+            return "Perfect! The y-intercept represents the point where the line crosses the vertical y-axis (when x = 0)."
+        return "Nice work. The line follows y = mx + b, where m is the rate of change (slope) and b is the initial starting point (intercept)."
+    return "This is a solid explanation. Try to connect your observation directly to the learning goal and misconception shown in the mission card!"
 
 
 def _simulation_key(topic: str) -> str:
