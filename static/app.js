@@ -533,26 +533,7 @@ function globalAnimLoop(now) {
   requestAnimationFrame(globalAnimLoop);
 }
 
-// Initial default lab load (mimicking main.py initial mission rendering)
-renderMission({
-  title: "Projectile motion: Micro-Lab",
-  hook: "Turn projectile motion from a rule to something you can test.",
-  learning_goal: "Build a working mental model by predicting, simulating, and explaining.",
-  misconception: "Horizontal motion and vertical motion are connected by time, not by a shared force.",
-  stages: [
-    { title: "Predict", action: "Write what you expect before touching the simulation." },
-    { title: "Experiment", action: "Move one control at a time and compare the visual result." },
-    { title: "Explain", action: "Use the evidence to repair the misconception in your own words." },
-  ],
-  check_question: "If launch speed stays fixed, what changes when the angle increases from 20 degrees to 45 degrees?",
-  success_hint: "Change one slider at a time and compare range, height, and time aloft.",
-  simulation: "projectile",
-  source: "local-fallback",
-});
-
-// Start Global Loop
-requestAnimationFrame(globalAnimLoop);
-
+// Chips Suggestion Data
 const chipsData = {
   projectile: [
     "Range increased",
@@ -601,6 +582,26 @@ function updateHelperChips() {
     container.appendChild(chip);
   });
 }
+
+// Initial default lab load (mimicking main.py initial mission rendering)
+renderMission({
+  title: "Projectile motion: Micro-Lab",
+  hook: "Turn projectile motion from a rule to something you can test.",
+  learning_goal: "Build a working mental model by predicting, simulating, and explaining.",
+  misconception: "Horizontal motion and vertical motion are connected by time, not by a shared force.",
+  stages: [
+    { title: "Predict", action: "Write what you expect before touching the simulation." },
+    { title: "Experiment", action: "Move one control at a time and compare the visual result." },
+    { title: "Explain", action: "Use the evidence to repair the misconception in your own words." },
+  ],
+  check_question: "If launch speed stays fixed, what changes when the angle increases from 20 degrees to 45 degrees?",
+  success_hint: "Change one slider at a time and compare range, height, and time aloft.",
+  simulation: "projectile",
+  source: "local-fallback",
+});
+
+// Start Global Loop
+requestAnimationFrame(globalAnimLoop);
 
 // Voice Recognition setup
 const voiceBtn = document.getElementById("voiceBtn");
